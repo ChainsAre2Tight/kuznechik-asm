@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include "../utils/blocks.h"
+
 extern void encrypt(unsigned char src[16], unsigned char dst[16], unsigned char roundKeys[10][16]);
 
 int main() {
@@ -8,4 +11,5 @@ int main() {
     for (int i = 0; i < 1000000; i++) {
         encrypt(block, block, roundkeys);
     }
+    print_block(block);
 }
