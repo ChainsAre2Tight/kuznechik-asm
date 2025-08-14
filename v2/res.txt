@@ -1,0 +1,2 @@
+cumulative xor 1x16, bit rotate: 2.000s
+cum xor 2x8, bit rotate: 1.700s

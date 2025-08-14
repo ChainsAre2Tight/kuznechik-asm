@@ -174,41 +174,42 @@ sbox_right_loop:
 L_loop:
                                         # linear(block)
     xorq %rax, %rax                     # empty rax, it will store cumulative xor
+    xorq %rbx, %rbx
 
                                         # left half of the block
     // # LinearLookup[0][array[0]] ^
     movzxb %dil, %r9                    # get a byte from left part of the block
-    xorb 0x000(%r11, %r9), %al          # use Linear Lookup to multiply that byte and xor it with rax
+    xorb 0x000(%r11, %r9, 1), %al       # use Linear Lookup to multiply that byte and xor it with rax
     rorq $8, %rdi                       # rotate left part by one byte
 
     // # LinearLookup[1][array[1]] ^
     movzxb %dil, %r9
-    xorb 0x100(%r11, %r9), %al
+    xorb 0x100(%r11, %r9, 1), %al
     rorq $8, %rdi
 
     // // LinearLookup[2][array[2]] ^
     movzxb %dil, %r9
-    xorb 0x200(%r11, %r9), %al
+    xorb 0x200(%r11, %r9, 1), %al
     rorq $8, %rdi
 
     // // LinearLookup[3][array[3]] ^
     movzxb %dil, %r9
-    xorb 0x300(%r11, %r9), %al
+    xorb 0x300(%r11, %r9, 1), %al
     rorq $8, %rdi
 
     // // LinearLookup[4][array[4]] ^
     movzxb %dil, %r9
-    xorb 0x400(%r11, %r9), %al
+    xorb 0x400(%r11, %r9, 1), %al
     rorq $8, %rdi
 
     // // LinearLookup[5][array[5]] ^
     movzxb %dil, %r9
-    xorb 0x500(%r11, %r9), %al
+    xorb 0x500(%r11, %r9, 1), %al
     rorq $8, %rdi
 
     // // LinearLookup[6][array[6]] ^
     movzxb %dil, %r9
-    xorb 0x600(%r11, %r9), %al
+    xorb 0x600(%r11, %r9, 1), %al
     rorq $8, %rdi
 
     // LinearLookup[7][array[7]] ^
@@ -219,43 +220,45 @@ L_loop:
                                         # right half of the block
     // // LinearLookup[6][array[8]] ^
     movzxb %sil, %r9
-    xorb 0x600(%r11, %r9), %al
+    xorb 0x600(%r11, %r9, 1), %bl
     rorq $8, %rsi
 
     // LinearLookup[5][array[9]] ^
     movzxb %sil, %r9
-    xorb 0x500(%r11, %r9), %al
+    xorb 0x500(%r11, %r9, 1), %bl
     rorq $8, %rsi
 
     // // LinearLookup[4][array[10]] ^
     movzxb %sil, %r9
-    xorb 0x400(%r11, %r9), %al
+    xorb 0x400(%r11, %r9, 1), %bl
     rorq $8, %rsi
 
     // // LinearLookup[3][array[11]] ^
     movzxb %sil, %r9
-    xorb 0x300(%r11, %r9), %al
+    xorb 0x300(%r11, %r9, 1), %bl
     rorq $8, %rsi
 
     // // LinearLookup[2][array[12]] ^
     movzxb %sil, %r9
-    xorb 0x200(%r11, %r9), %al
+    xorb 0x200(%r11, %r9, 1), %bl
     rorq $8, %rsi
 
     // // LinearLookup[1][array[13]] ^
     movzxb %sil, %r9
-    xorb 0x100(%r11, %r9), %al
+    xorb 0x100(%r11, %r9, 1), %bl
     rorq $8, %rsi
 
     // // LinearLookup[0][array[14]] ^
     movzxb %sil, %r9
-    xorb (%r11, %r9), %al
+    xorb (%r11, %r9, 1), %bl
     rorq $8, %rsi
 
     // LinearLookup[6][array[15]]
     movzxb %sil, %r9
-    xorb 0x600(%r11, %r9, 1), %al
+    xorb 0x600(%r11, %r9, 1), %bl
     rorq $8, %rsi
+
+    xorb %bl, %al
     
                                         # R, left byteshift
     shlq $56, %rax                      # shift %al 7 bits to the left, so it becomes MSB of rax
